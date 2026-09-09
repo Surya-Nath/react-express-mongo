@@ -1,47 +1,33 @@
 services:
   frontend:
-    build:
-      context: frontend
-      target: development
+    build: ./frontend
     ports:
-      - 3000:3000
-    stdin_open: true
-    volumes:
-      - ./frontend:/usr/src/app
-      - /usr/src/app/node_modules
-    restart: always
-    networks:
-      - react-express
+      - "80:80"
     depends_on:
       - backend
+    networks:
+      - frontend
 
   backend:
-    restart: always
-    build:
-      context: backend
-      target: development
-    volumes:
-      - ./backend:/usr/src/app
-      - /usr/src/app/node_modules
+    build: ./backend
+    environment:
+      NODE_ENV: development
     depends_on:
       - mongo
     networks:
-      - express-mongo
-      - react-express
-    expose: 
-      - 3000
+      - frontend
+      - backend
+
   mongo:
-    restart: always
     image: mongo:4.2.0
     volumes:
       - mongo_data:/data/db
     networks:
-      - express-mongo
-    expose:
-      - 27017
+      - backend
+
 networks:
-  react-express:
-  express-mongo:
+  frontend:
+  backend:
 
 volumes:
   mongo_data:
