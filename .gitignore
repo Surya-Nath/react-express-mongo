@@ -3,3 +3,9 @@ backend/node_modules/
 .idea/
 data
 *.log
+*.pem
+.terraform/
+*.tfstate
+*.tfstate.*
+ansible/inventory.ini
+.env
